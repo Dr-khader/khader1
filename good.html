@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعلم الكلمات</title>
+    <style>
+        /* CSS هنا */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* لتمكين الإطار والمعنى من البقاء ثابتين */
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        td {
+            cursor: pointer;
+        }
+
+        #word-meaning-box {
+            background-color: #5cb85c;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: sticky; /* تثبيت الإطار أعلى الصفحة */
+            top: 0; /* تحديد المسافة بين الإطار وأعلى الصفحة */
+            z-index: 2; /* لضمان عرض الإطار فوق الجدول */
+        }
+        
+        #word-meaning {
+            font-size: 36px;
+        }
+
+        #example-box {
+            background-color: #f0ad4e;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            position: sticky; /* تثبيت الإطار أعلى الصفحة */
+            top: 80px; /* تحديد المسافة بين الإطار وأعلى الصفحة */
+            z-index: 1; /* لضمان عرض الإطار تحت الجدول */
+        }
+
+        /* أسلوب لزر الترحيب */
+        .welcome-button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .welcome-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- صفحة الترحيب -->
+    <div id="welcomePage">
+        <h1>مرحبًا بك في برنامجنا!</h1>
+        <h1>اعداد الدكتور خضر مصباح الطيطي</h1>
+        <button class="welcome-button" id="continueButton">استمر</button>
+    </div>
+
+    <!-- صفحة التعلم -->
+    <div class="container" id="learnPage" style="display: none;">
+        <h1>تعلم الكلمات</h1>
+        <div id="word-meaning-box">
+            <div id="word-meaning"></div>
+        </div>
+        <div id="example-box">
+            <div id="word-example"></div>
+        </div>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>الكلمة</th>
+                <th>المعنى</th>
+                <th>مثال بالإنجليزية</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // JavaScript هنا
+        const words = [
+            "1 - Apple - تفاحة - I like to eat an apple.",
+            "2 - Banana - موز - She enjoys eating bananas.",
+            "3 - Car - سيارة - My dad drives a car.",
+            "4 - Dog - كلب - Their dog is very friendly.",
+            "5 - Elephant - فيل - Elephants are big animals.",
+            "6 - Fish - سمكة - I saw a beautiful fish in the aquarium.",
+            "7 - Giraffe - زرافة - The giraffe has a long neck.",
+            "8 - Horse - حصان - She rides her horse in the park.",
+            "9 - Ice Cream - آيس كريم - Chocolate ice cream is my favorite.",
+            "10 - Jungle - غابة استوائية - The jungle is full of wildlife.",
+            "11 - Kite - طائرة ورقية - Let's fly a kite in the park.",
+            "12 - Lion - أسد - Lions are the kings of the jungle.",
+            "13 - Monkey - قرد - Monkeys are very playful animals.",
+            "14 - Nest - عش - The birds built a nest in the tree.",
+            "15 - Orange - برتقال - I like to have fresh orange juice.",
+            "16 - Penguin - بطريق - Penguins live in cold regions.",
+            "17 - Queen - ملكة - She is dressed like a queen.",
+            "18 - Rainbow - قوس قزح - After the rain, we saw a beautiful rainbow.",
+            "19 - Sun - شمس - The sun shines brightly in the sky.",
+            "20 - Tiger - نمر - Tigers have striped fur.",
+            "21 - Umbrella - مظلة - I need an umbrella when it rains.",
+            "22 - Violin - كمان - He plays the violin beautifully.",
+            "23 - Watermelon - بطيخ - Watermelon is a refreshing fruit.",
+            "24 - Xylophone - زيلوفون - The xylophone makes a lovely sound.",
+            "25 - Yacht - يخت - They went sailing on a yacht.",
+            "26 - Zebra - حمار وحشي - Zebras have black and white stripes.",
+            // واستمر في إضافة المزيد من الكلمات والترجمات والأمثلة
+
+            // 50 كلمة إضافية
+            "27 - Computer - حاسوب - I use my computer for work.",
+            "28 - Phone - هاتف - My phone is ringing.",
+            "29 - Book - كتاب - I enjoy reading a good book.",
+            "30 - Music - موسيقى - Music can be very soothing.",
+            "31 - Coffee - قهوة - I like to start my day with coffee.",
+            "32 - Friend - صديق - He is my best friend.",
+            "33 - Family - عائلة - Family is important to me.",
+            "34 - Love - حب - Love makes the world go round.",
+            "35 - Movie - فيلم - Let's watch a movie tonight.",
+            "36 - Happiness - سعادة - Finding happiness is a journey.",
+            "37 - Travel - سفر - I love to travel and explore new places.",
+            "38 - Language - لغة - Learning a new language can be challenging.",
+            "39 - Food - طعام - I enjoy trying different types of food.",
+            "40 - Time - وقت - Time flies when you're having fun.",
+            "41 - Work - عمل - I have a lot of work to do.",
+            "42 - School - مدرسة - My kids go to school.",
+            "43 - Money - مال - Money can't buy happiness.",
+            "44 - Health - صحة - Good health is a blessing.",
+            "45 - Home - منزل - There's no place like home.",
+            "46 - Nature - طبيعة - Nature is beautiful and serene.",
+            "47 - Internet - الإنترنت - The internet has changed the world.",
+            "48 - Art - فن - Art is a form of expression.",
+            "49 - Dream - حلم - Follow your dreams.",
+            "50 - Rain - مطر - I love the sound of rain.",
+            "51 - Beach - شاطئ - Let's go to the beach this weekend.",
+            "52 - Garden - حديقة - I have a beautiful garden.",
+            "53 - Sport - رياضة - Playing sports keeps me active.",
+            "54 - Hope - أمل - Never lose hope.",
+            "55 - Game - لعبة - I enjoy playing video games.",
+            "56 - Car - سيارة - My car needs a wash.",
+            "57 - Weather - طقس - The weather is nice today.",
+            "58 - Mountain - جبل - Climbing mountains is a challenge.",
+            "59 - Job - وظيفة - I'm looking for a new job.",
+            "60 - Day - يوم - Have a great day!",
+            "61 - Night - ليل - The night sky is full of stars.",
+            "62 - Weekend - عطلة نهاية الأسبوع - I love the weekend.",
+            "63 - Holiday - عطلة - Let's plan a holiday trip.",
+            "64 - Baby - طفل - My sister had a baby.",
+            "65 - Food - طعام - What's your favorite food?",
+            "66 - Color - لون - I like the color blue.",
+            "67 - Song - أغنية - That's my favorite song.",
+            "68 - Game - لعبة - We won the game!",
+            "69 - Computer - حاسوب - My computer crashed.",
+            "70 - Phone - هاتف - My phone battery is low.",
+            "71 - Book - كتاب - This book is interesting.",
+            "72 - Music - موسيقى - I enjoy listening to music.",
+            "73 - Coffee - قهوة - Coffee keeps me awake.",
+            "74 - Friend - صديق - You're a true friend."
+        ];
+
+        const wordMeaning = document.getElementById("word-meaning");
+        const wordExample = document.getElementById("word-example");
+        const welcomePage = document.getElementById("welcomePage");
+        const learnPage = document.getElementById("learnPage");
+        const continueButton = document.getElementById("continueButton");
+
+        // عند النقر على زر "استمر" على صفحة الترحيب
+        continueButton.addEventListener("click", function () {
+            welcomePage.style.display = "none"; // إخفاء صفحة الترحيب
+            learnPage.style.display = "block"; // عرض صفحة التعلم
+        });
+
+        words.forEach((word, index) => {
+            const [number, english, arabic, example] = word.split(" - ");
+            const table = document.querySelector("table");
+            const row = table.insertRow(index + 1);
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+            cell1.innerHTML = number;
+            cell2.innerHTML = english;
+            cell3.innerHTML = arabic;
+            cell4.innerHTML = example;
+            row.onclick = function () {
+                displayMeaning(arabic, example);
+            };
+        });
+
+        function displayMeaning(arabic, example) {
+            wordMeaning.textContent = arabic;
+            wordExample.textContent = example;
+        }
+    </script>
+</body>
+</html>
